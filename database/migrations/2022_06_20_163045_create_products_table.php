@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddColumnRoleTableUsers extends Migration
+class CreateProductsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,13 @@ class AddColumnRoleTableUsers extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('role');
+        Schema::create('products', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->id();
+            $table->string('name');
+            $table->double('price');
+            $table->double('tax');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +30,6 @@ class AddColumnRoleTableUsers extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
-        });
+        Schema::dropIfExists('products');
     }
 }
