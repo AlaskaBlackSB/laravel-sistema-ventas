@@ -17,8 +17,19 @@ class CreateSalesTable extends Migration
             $table->engine = 'InnoDB';
             $table->id();
             $table->double('total');
-            $table->foreignId('product_id', 'fk_products_sale_products_product_id_idx')
-                ->constrained()
+            // $table->foreignId('invoice_id', 'fk_sales_invoices_invoice_id_idx')
+            $table->foreignId('invoice_id')
+                ->nullable()
+                ->default(null)
+                ->references('id')->on('invoices')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+            $table->foreignId('product_id', 'fk_sales_products_product_id_idx')
+                ->references('id')->on('products')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+            $table->foreignId('user_id', 'fk_sales_users_user_id_idx')
+                ->references('id')->on('users')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
             $table->timestamps();
