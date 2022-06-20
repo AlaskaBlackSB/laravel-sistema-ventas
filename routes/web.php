@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ShopController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +23,16 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Muestra todos los productos
+Route::get('shop', [ShopController::class, 'index'])->middleware(['auth'])->name('shop.products.index');
+
+// Realiza la venta
+Route::post('shop', [ShopController::class, 'store'])->middleware(['auth'])->name('shop.sale.store');
+
+//Muestra todas las facturas hechas y por hacer
+Route::get('admin/invoces', [InvoiceController::class, 'index'])->middleware(['auth'])->name('invoice.index');
+
+// Genera todas las facturas faltantes
+Route::post('admin/invoces', [InvoiceController::class, 'store'])->middleware(['auth'])->name('invoice.generate');
+
