@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -30,9 +31,19 @@ Route::get('shop', [ShopController::class, 'index'])->middleware(['auth'])->name
 // Realiza la venta
 Route::post('shop', [ShopController::class, 'store'])->middleware(['auth'])->name('shop.sale.store');
 
+// CRUD de productos
+Route::get('shop/create/product', [ProductController::class, 'index'])->middleware(['auth'])->name('products.index');
+Route::post('shop/create/product', [ProductController::class, 'store'])->middleware(['auth'])->name('products.store');
+Route::get('shop/product/{product_id}/', [ProductController::class, 'edit'])->middleware(['auth'])->name('products.edit');
+Route::put('shop/product/{product_id}', [ProductController::class, 'update'])->middleware(['auth'])->name('products.update');
+Route::delete('shop/product/{product_id}', [ProductController::class, 'destroy'])->middleware(['auth'])->name('products.destroy');
+
 //Muestra todas las facturas hechas y por hacer
-Route::get('admin/invoces', [InvoiceController::class, 'index'])->middleware(['auth'])->name('invoice.index');
+Route::get('admin/invoices', [InvoiceController::class, 'index'])->middleware(['auth'])->name('invoice.index');
+
+// Muestra el resumen de la factura
+Route::get('admin/invoices/{invoice_id}', [InvoiceController::class, 'show'])->middleware(['auth'])->name('invoice.show');
 
 // Genera todas las facturas faltantes
-Route::post('admin/invoces', [InvoiceController::class, 'store'])->middleware(['auth'])->name('invoice.generate');
+Route::post('admin/invoices', [InvoiceController::class, 'store'])->middleware(['auth'])->name('invoice.generate');
 

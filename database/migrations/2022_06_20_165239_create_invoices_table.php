@@ -15,11 +15,12 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            // $table->foreignId('sale_id', 'fk_sales_invoices_sales_sale_id_idx')
-            //     ->constrained()
-            //     ->cascadeOnUpdate()
-            //     ->restrictOnDelete();
-            // $table->boolean('made')->default(0);
+            $table->double('total_cost');
+            $table->double('total_tax');
+            $table->foreignId('user_id', 'fk_invoices_users_user_id_idx')
+                ->references('id')->on('users')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
             $table->timestamps();
         });
     }
