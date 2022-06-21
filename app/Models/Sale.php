@@ -12,6 +12,12 @@ class Sale extends Model
     protected $fillable = [
         'total',
         'product_id',
-        'user_id'
+        'user_id',
+        'invoice_id',
     ];
+
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+    }
 }

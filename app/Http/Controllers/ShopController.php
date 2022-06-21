@@ -14,6 +14,11 @@ class ShopController extends Controller
 {
     public function index()
     {
+        // Compueba si es admin
+        if (Auth::user()->role != 'ROLE_USER') {
+            return redirect()->route('invoice.index')->with('error', 'No tienes permiso para acceder.');
+        }
+
         //Extrae todos los producto
         $products = Product::all();
 
@@ -27,6 +32,12 @@ class ShopController extends Controller
 
     public function store(StoreSaleRequest $request)
     {
+
+        // Compueba si es admin
+        if (Auth::user()->role != 'ROLE_USER') {
+            return redirect()->route('invoice.index')->with('error', 'No tienes permiso para acceder.');
+        }
+
         //Busca el producto
         $product = Product::find($request->product_id);
 
@@ -35,11 +46,7 @@ class ShopController extends Controller
             'product_id' => $request->product_id,
             'total' => $product->price,
             'user_id' => Auth::id(),
-        ]);
-
-        // Crea la solicitud de factura
-        Invoice::create([
-            'sale_id' => $sale->id
+            'invoice_id' => null, //indica que no tiene factura
         ]);
 
         //redirecciona a /shop
